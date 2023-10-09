@@ -75,8 +75,8 @@ drawWorld m = Pictures
 
 
           colouredPolygon col = color col . polygon . map f
-          --f v = let V2 a b = offset m v in (a, b)
-          f (V2 a b) = (a, b)
+          f v = let V2 a b = offset m v in (a, b)
+          --f (V2 a b) = (a, b)
           -- the z's are gotten by getting the midpoints of the sides and then doing some subtractions
           -- the three biggest are then equivalent to the three being greater than zero, provided that none are 0.
           -- this case is fixed tho, because when they are zero our view line is in line with the plane, therefore it is not visible
