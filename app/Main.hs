@@ -6,7 +6,7 @@ import Graphics.Gloss
 import Graphics.Gloss.Interface.Pure.Game
 import Control.Lens
 import Data.List (sortBy)
-import Data.Semigroup (diff)
+import Data.Bifunctor (bimap)
 -- TODO: Simulate actual rubiks cube.
 -- This is probably going to be done by creating 27 cubes (3^3) and placing them relative to each other,
 -- such that when a layer is rotated the middle of the layer is stationary.
@@ -46,10 +46,10 @@ nextWorld t w = rotAllMatrix (t' * pi / 2) (t' * pi / 5) (t' * pi / 7) !*! w
     where t' = realToFrac t
 
 -- retrieves points for polygon
-getCorners :: V2 Float -> V2 Float -> [V2 Float]
+getCorners :: Floating a => V2 a -> V2 a -> [V2 a]
 getCorners (V2 x0 y0) (V2 x1 y1) = [V2 0 0, V2 x0 y0, V2 (x0 + x1) (y0 + y1), V2 x1 y1]
 
-drawWorld :: M33 Float -> Picture
+drawWorld :: (Real a, Floating a) => M33 a -> Picture
 drawWorld m = Pictures
     [
         Pictures threeVisible
@@ -74,13 +74,15 @@ drawWorld m = Pictures
           polys = [greenPoly, bluePoly, redPoly, yellowPoly, blackPoly, cyanPoly]
 
 
-          colouredPolygon col = color col . polygon . map f
+          colouredPolygon col = color col . polygon . map (bimap realToFrac realToFrac . f )
           f v = let V2 a b = offset m v in (a, b)
           --f (V2 a b) = (a, b)
           -- the z's are gotten by getting the midpoints of the sides and then doing some subtractions
           -- the three biggest are then equivalent to the three being greater than zero, provided that none are 0.
-          -- this case is fixed tho, because when they are zero our view line is in line with the plane, therefore it is not visible
-          threeVisible = map snd $ filter ((>0) . fst) $ zip [-z0, -z1, -z2, z0, z1, z2] polys 
+          -- this case is automatically solved tho, because when they are zero our view line is in line with the plane, therefore it is not visible
+          threeVisible = map snd $ filter ((>0) . fst) $ zip [-z0, -z1, -z2, z0, z1, z2] polys
+
+data Cube = Cube --TODO: Data structure which is easily interlinked such that a rotation in one side changes the other sides
 
 offset m v  = v - (d ^/ 2)
     where
