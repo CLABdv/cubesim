@@ -8,18 +8,18 @@ import Control.Lens
 import Data.List (sortBy)
 import Data.Bifunctor (bimap)
 -- TODO: Simulate actual rubiks cube.
--- This is probably going to be done by creating 27 cubes (3^3) and placing them relative to each other,
+-- This is probably going to be done by creating 27 cubes (3^3) (actually, only 26 are needed and barely that) and placing them relative to each other,
 -- such that when a layer is rotated the middle of the layer is stationary.
 -- Afterwards some of the faces of the cubes which form the layer will need to be hidden.
 
 main :: IO ()
 main = play (InWindow "Hello, World!" (400, 400) (10, 10)) white fps (V3
-    (V3 ll 0 0)
-    (V3 0 ll 0)
-    (V3 0 0 ll)) drawWorld eventHandler nextWorld
+    (V3 sl 0 0)
+    (V3 0 sl 0)
+    (V3 0 0 sl)) drawWorld eventHandler nextWorld
 
 fps = 144
-ll = 100
+sl = 100
 
 rotxMatrix :: Floating a => a -> V3 (V3  a)
 rotxMatrix theta = V3 (V3 1 0 0)
@@ -40,7 +40,6 @@ rotAllMatrix :: Floating a => a -> a -> a -> V3 (V3 a)
 rotAllMatrix thetax thetay thetaz = rotxMatrix thetax !*! rotyMatrix thetay !*! rotzMatrix thetaz
 
 
--- each second the cube rotates 180 degrees around the z-axis
 nextWorld :: Floating a => Float -> V3 (V3 a) -> V3 (V3 a)
 nextWorld t w = rotAllMatrix (t' * pi / 2) (t' * pi / 5) (t' * pi / 7) !*! w
     where t' = realToFrac t
@@ -82,7 +81,6 @@ drawWorld m = Pictures
           -- this case is automatically solved tho, because when they are zero our view line is in line with the plane, therefore it is not visible
           threeVisible = map snd $ filter ((>0) . fst) $ zip [-z0, -z1, -z2, z0, z1, z2] polys
 
-data Cube = Cube --TODO: Data structure which is easily interlinked such that a rotation in one side changes the other sides
 
 offset m v  = v - (d ^/ 2)
     where
