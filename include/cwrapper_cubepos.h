@@ -1,5 +1,5 @@
-#ifndef C_WRAPPER_CUBEPOS_H_
-#define C_WRAPPER_CUBEPOS_H_
+#ifndef CWRAPPER_CUBEPOS_H_
+#define CWRAPPER_CUBEPOS_H_
 #ifdef __cplusplus
 #define EXTERNC extern "C"
 #else

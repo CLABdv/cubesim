@@ -37,7 +37,7 @@ executable cubestuff
     include-dirs:
         ./include
     c-sources:
-        ./csrc/c_wrapper_cubepos.cpp
+        ./csrc/cwrapper_cubepos.cpp
         ./csrc/cubepos.cpp
     extra-libraries: stdc++
         

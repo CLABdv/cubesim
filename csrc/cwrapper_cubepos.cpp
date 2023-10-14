@@ -1,4 +1,4 @@
-#include "c_wrapper_cubepos.h"
+#include "cwrapper_cubepos.h"
 #include "cubepos.h"
 
 cubepos_t c_cubepos_init(int a, int b, int c)
