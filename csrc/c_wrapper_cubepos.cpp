@@ -18,10 +18,11 @@ int c_parse_move(cubepos_t cube_untyped, const char *p)
     return cubeTyped->parse_move(p);
 }
 
-void c_move(cubepos_t cube_untyped, int mv)
+cubepos_t c_move(cubepos_t cube_untyped, int mv)
 {
     cubepos *cubeTyped = static_cast<cubepos *>(cube_untyped);
     cubeTyped->move(mv);
+    return cube_untyped; // this is to (hopefully) make haskell not go insane
 }
 
 char *c_singmaster_string(cubepos_t cube_untyped)
